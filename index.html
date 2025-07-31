@@ -1,0 +1,209 @@
+<!DOCTYPE html><html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EASY EARN</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ffffff, #002b36, #000000, #f1c40f);
+      color: #fff;
+      text-align: center;
+      overflow-x: hidden;
+    }header {
+  padding: 1rem 0;
+  font-size: 2.8rem;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.6);
+  color: #f1c40f;
+}
+
+#clock {
+  font-size: 1.2rem;
+  margin-top: 0.2rem;
+  color: #ffffff;
+}
+
+.counters {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 2rem;
+}
+
+.task {
+  width: 80%;
+  max-width: 400px;
+  padding: 1rem;
+  background: #0044cc;
+  border-radius: 16px;
+  color: white;
+  font-size: 1.4rem;
+  position: relative;
+  animation: floatTask 3s ease-in-out infinite;
+  cursor: pointer;
+}
+
+.task:nth-child(2) {
+  animation-delay: 1.5s;
+}
+
+.task:nth-child(3) {
+  background: #0055ee;
+  animation-delay: 3s;
+}
+
+@keyframes floatTask {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0); }
+}
+
+.timer {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: #f1c40f;
+}
+
+.notice {
+  margin-top: 1rem;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  background: #000;
+  padding: 1rem 0;
+}
+
+.notice-text {
+  display: inline-block;
+  font-size: 1.4rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, #ff4d4d, #ffff66, #00ffcc, #ff4d4d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: scroll-left 15s linear infinite, shimmer 2s infinite;
+}
+
+@keyframes scroll-left {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes shimmer {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(1.8); }
+  100% { filter: brightness(1); }
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    EASY EARN
+    <div id="clock"></div>
+  </header>  <div class="counters">
+    দেখা হয়েছে: <span id="adsSeen">0</span> | শুরু হয়েছে: <span id="adsStarted">0</span>
+  </div>  <div class="tasks">
+    <div class="task" id="task1" onclick="startAd(1)">VISIT & EARN</div>
+    <div class="task" id="task2" onclick="startAd(2)">VISIT & EARN</div>
+    <div class="task" id="task3" onclick="startAd(3)">VISIT & EARN</div>
+  </div>  <div class="timer" id="timer">অ্যাড টাইমার: 0 সেকেন্ড</div>  <div class="notice">
+    <div class="notice-text">🕌 নামাজের সময় হলে নামাজ পড়ুন 🕌</div>
+  </div>  <div id="adContainer" style="margin-top:2rem;"></div>  <script>
+    let adsSeen = 0;
+    let adsStarted = 0;
+    let adInProgress = false;
+    let timerInterval;
+
+    function updateClock() {
+      const now = new Date();
+      const dayNames = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার'];
+      const monthNames = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+
+      const day = dayNames[now.getDay()];
+      const date = now.getDate();
+      const month = monthNames[now.getMonth()];
+      const year = now.getFullYear();
+
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      let seconds = now.getSeconds();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      seconds = seconds < 10 ? '0' + seconds : seconds;
+
+      const timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
+      const fullString = `${day}, ${date} ${month} ${year} | ${timeString}`;
+      document.getElementById("clock").innerText = fullString;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function startAd(taskNum) {
+      if (adInProgress) {
+        alert("একটি অ্যাড শেষ হওয়ার অপেক্ষা করুন।");
+        return;
+      }
+
+      adInProgress = true;
+      adsStarted++;
+      document.getElementById("adsStarted").innerText = adsStarted;
+      document.getElementById("adContainer").innerHTML = "";
+
+      if (taskNum === 1 || taskNum === 2) {
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = '//pl27302823.profitableratecpm.com/bb/4c/ac/bb4cac11790b8ef8b5da2aaa55d74286.js';
+        document.getElementById("adContainer").appendChild(script);
+      } else if (taskNum === 3) {
+        window.open('https://www.profitableratecpm.com/a9bbegmc?key=adfeacbca206e0b4a501c69190c64c0e', '_blank');
+        endAd();
+        return;
+      }
+
+      let seconds = 60;
+      document.getElementById("timer").innerText = `অ্যাড টাইমার: ${seconds} সেকেন্ড`;
+
+      timerInterval = setInterval(() => {
+        seconds--;
+        document.getElementById("timer").innerText = `অ্যাড টাইমার: ${seconds} সেকেন্ড`;
+
+        if (seconds <= 5) {
+          document.getElementById("task" + taskNum).innerText = `বিরতি: ${seconds} সেকেন্ড`;
+        }
+
+        if (seconds <= 0) {
+          clearInterval(timerInterval);
+          adsSeen++;
+          document.getElementById("adsSeen").innerText = adsSeen;
+          document.getElementById("task" + taskNum).innerText = "VISIT & EARN";
+          document.getElementById("timer").innerText = "৫ সেকেন্ড বিরতি...";
+
+          setTimeout(() => {
+            endAd();
+          }, 5000);
+        }
+      }, 1000);
+    }
+
+    function endAd() {
+      document.getElementById("adContainer").innerHTML = "";
+      document.getElementById("timer").innerText = "অ্যাড টাইমার: 0 সেকেন্ড";
+      adInProgress = false;
+    }
+  </script></body>
+</html>
